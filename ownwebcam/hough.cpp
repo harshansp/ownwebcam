@@ -6,22 +6,25 @@
 using namespace cv;
 using namespace std;
 
-houghVideo::houghVideo() {
-
-}
-
 int houghVideo::detectCircles(Mat& frame) {
     Mat gray;
     cvtColor(frame, gray, COLOR_BGR2GRAY);
-    GaussianBlur(gray, gray, Size(9, 9), 2, 2);
-
+    medianBlur(gray, gray, 5);
     vector<Vec3f> circles;
-    HoughCircles(gray, circles, HOUGH_GRADIENT, 1, gray.rows / 8, 200, 100);
-
-    for (size_t i = 0; i < circles.size(); i++) {
-        Point center(cvRound(circles[i][0]), cvRound(circles[i][1]));
-        int radius = cvRound(circles[i][2]);
-        circle(frame, center, radius, Scalar(0, 255, 100), 2);
+    HoughCircles(gray, circles, HOUGH_GRADIENT, 1,
+        gray.rows / 16, // change this value to detect circles with different distances to each other
+        100, 30, 1, 30 // change the last two parameters
+        // (min_radius & max_radius) to detect larger circles
+    );
+    for (size_t i = 0; i < circles.size(); i++)
+    {
+        Vec3i c = circles[i];
+        Point center = Point(c[0], c[1]);
+        // circle center
+        circle(frame, center, 1, Scalar(0, 100, 100), 3, LINE_AA);
+        // circle outline
+        int radius = c[2];
+        circle(frame, center, radius, Scalar(255, 100, 255), 3, LINE_AA);
     }
 
     return circles.size();

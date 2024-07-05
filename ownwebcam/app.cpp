@@ -8,8 +8,6 @@
 #include <iostream>
 
 int main() {
-    application app;
-    app.init(); 
-    app.processFrame(); 
-    return 0;
+	application app;
+	return 0;
 }

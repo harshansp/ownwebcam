@@ -14,6 +14,7 @@
 
 */
 
+
 #include <iostream>
 #include <memory>
 #include "opencv2/opencv.hpp"
@@ -28,21 +29,22 @@ class application {
 public:
 	application();
 	~application();
+
+private:
 	Mat frame;
 	char key;
 	void init();
 	void reset();
 	void processFrame();
 	string outputPath;
-
-
-private:
+	recordVideo recorder;
+	houghVideo detect;
 	shared_ptr<VideoCapture> cam;
 	bool isRecording;
 	bool isDetecting;
-	recordVideo recorder;
-	houghVideo detect;
 
 };
+
+
 
 

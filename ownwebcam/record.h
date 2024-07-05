@@ -7,6 +7,10 @@
 * 3)Stop the recording
 */
 
+
+#ifndef RECORD_H
+#define RECORD_H
+
 #include "opencv2/opencv.hpp"
 
 using namespace cv;
@@ -24,3 +28,4 @@ private:
 	VideoWriter videoWriter;
 
 };
+#endif //RECORD

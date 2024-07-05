@@ -26,7 +26,7 @@ application::application() { //initalzing the flow of the application using a co
 	isRecording = false;
 	isDetecting = false;
 	init();
-	processFrame();
+
 }
 
 application::~application() {
@@ -37,17 +37,18 @@ application::~application() {
 void application::init() {
 	cam = make_shared<VideoCapture>(0);
 	if (!cam->isOpened()) {
-		cout << "Error in opening the camera" << endl;
-		exit;
+		cerr << "Error in opening the camera" << endl;
+		exit(1);
 	}
 	namedWindow("webcam", WINDOW_FREERATIO);
 	cout << "camera initaialized" << endl;
+	processFrame();
 
 }
 
 void application::reset() {
 	if (cam->isOpened()) {
-		this->cam->release();
+		cam->release();
 	}
 	destroyAllWindows;
 	init();
@@ -64,11 +65,12 @@ void application::processFrame() {
 		}
 		if (isDetecting) {
 			int circles = detect.detectCircles(frame);
-			cout << "detected circles" << endl;
+			cout << "detected circles:" << circles << endl;
 		}
 
 		key = waitKey(1);
-		outputPath = "C:\output\output.avi";
+		outputPath = "C:\\output\\output.avi";
+		imshow("webcam", frame);
 
 
 		if (key == 'r') {
@@ -82,11 +84,14 @@ void application::processFrame() {
 				cout << "recorder stopped" << endl;
 			}
 		}
-		else if (key == 'c') {
+		else if (key == 'd') {
 			isDetecting = !isDetecting;
 			if (isDetecting) {
-				cout << (isDetecting ? "Detection started" : "Detection stopped") << endl;
-				cout << "detection started" << endl;
+				cout << "Detection started" << endl;
+			}
+			else {
+				cout << "Detection stopped" << endl;
+
 			}
 		}
 		else if (key == ' ') {
@@ -95,4 +100,3 @@ void application::processFrame() {
 
 	}
 }
-
